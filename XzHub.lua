@@ -99,7 +99,7 @@ end
 GamesTab:CreateButton({
 Name = "Blade Ball #2",
 Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/SoyAdriYT/PitbullHubX/refs/heads/main/PitbullHubX.lua", true))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/funhaji/Blade-Ball/refs/heads/main/No-Lag.lua", true))()
 end
 })
 
