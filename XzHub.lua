@@ -111,6 +111,13 @@ end
 })
 
 GamesTab:CreateButton({
+Name = "Blox Fruits (RONIX)",
+Callback = function()
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/fe9186f93ffe4000120ba5db7ef9443b.lua"))()
+end
+})
+
+GamesTab:CreateButton({
 Name = "Fisch (KEY)",
 Callback = function()
 loadstring(game:HttpGet('https://raw.githubusercontent.com/Just3itx/Lunor-Loadstrings/refs/heads/main/Loader'))()
