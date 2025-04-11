@@ -146,6 +146,13 @@ end
 })
 
 TrollTab:CreateButton({
+Name = "Sirius",
+Callback = function()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/RizzerGUI'))();
+end
+})
+
+TrollTab:CreateButton({
 Name = "Hug",
 Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploitFin/Animations/refs/heads/main/Front%20and%20Back%20Hug%20Tool"))()
