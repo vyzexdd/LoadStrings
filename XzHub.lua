@@ -99,7 +99,9 @@ end
 GamesTab:CreateButton({
 Name = "Blade Ball #2",
 Callback = function()
-local url = "https://raw.githubusercontent.com/Fspl0it/Blade-Ball/refs/heads/main/Game.lua"
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Fspl0it/Blade-Ball/refs/heads/main/Game.lua"))()
+end
+})
 
 local success, response = pcall(function()
 return game:HttpGet(url)
