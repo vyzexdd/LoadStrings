@@ -1,51 +1,120 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local players = game:GetService("Players")
-local player = players.LocalPlayer
+local plr = players.LocalPlayer
 
-local function onCharacterSpawn(character)
-    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-    local humanoid = character:WaitForChild("Humanoid")
+local function onCharacterAdded(character)
+local hrp = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
 end
+plr.CharacterAdded:Connect(onCharacterAdded)	
+if plr.Character then onCharacterAdded(plr.Character) end
 
-player.CharacterAdded:Connect(onCharacterSpawn)
-if player.Character then
-    onCharacterSpawn(player.Character)
-end
-
-local window = Rayfield:CreateWindow({
-    Name = "XzHub",
-    LoadingTitle = "Loading...",
-    LoadingSubtitle = "By XZIE",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "XzHub",
-        FileName = "byXZIE"
-    }
+local Window = Rayfield:CreateWindow({
+Name = "\226\150\186 XzHub \226\150\192",
+LoadingTitle = "Loading...",
+LoadingSubtitle = "Made by XZIE",
+ConfigurationSaving = {
+Enabled = true,
+FolderName = "XzHub",
+FileName = "byXZIE"
+}
 })
 
-local hubsTab = window:CreateTab("Hubs")
-local trollTab = window:CreateTab("Troll")
-local gamesTab = window:CreateTab("Games")
+local HubsTab = Window:CreateTab("Hubs")
+local TrollTab = Window:CreateTab("Troll")
+local GamesTab = Window:CreateTab("Games")
+local HitboxTab = Window:CreateTab("Hitbox")
+local SetupTab = Window:CreateTab("Setup")
+
+_G.HitboxSize = 50
+_G.HitboxTransparency = 0.7
+_G.HitboxEnabled = false
+
+local function modifyHitbox()
+while _G.HitboxEnabled do
+for _, player in pairs(players:GetPlayers()) do
+if player ~= plr and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+local hrp = player.Character.HumanoidRootPart
+hrp.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+hrp.Transparency = _G.HitboxTransparency
+hrp.BrickColor = BrickColor.new("Really blue")
+hrp.Material = Enum.Material.Neon
+hrp.CanCollide = false
+end
+end
+task.wait(0.1)
+end
+end
+
+HitboxTab:CreateToggle({
+Name = "Enable Hitbox Modifier",
+CurrentValue = _G.HitboxEnabled,
+Flag = "HitboxToggle",
+Callback = function(Value)
+_G.HitboxEnabled = Value
+if Value then
+modifyHitbox()
+end
+end
+})
+
+HitboxTab:CreateSlider({
+Name = "Hitbox Size (only works in an super small amount of games)",
+Range = {10, 100},
+Increment = 5,
+Suffix = "Size",
+CurrentValue = _G.HitboxSize,
+Flag = "HitboxSize",
+Callback = function(Value)
+_G.HitboxSize = Value
+end
+})
+
+HitboxTab:CreateSlider({
+Name = "Hitbox Transparency",
+Range = {0, 1},
+Increment = 0.1,
+Suffix = "",
+CurrentValue = _G.HitboxTransparency,
+Flag = "HitboxTransparency",
+Callback = function(Value)
+_G.HitboxTransparency = Value
+end
+})
 
 Rayfield:Notify({
-    Title = "XzHub",
-    Content = "GUI Loaded Successfully!",
-    Duration = 3,
-    Image = 4483362458
+Title = "XzHub",
+Content = "GUI Loaded Successfully!",
+Duration = 3,
+Image = 4483362458
 })
 
-gamesTab:CreateButton({
-    Name = "Blade Ball",
-    Callback = function()
-        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/79ab2d3174641622d317f9e234797acb.lua"))()
-    end
+GamesTab:CreateButton({
+Name = "Blade Ball",
+Callback = function()
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/79ab2d3174641622d317f9e234797acb.lua"))()
+end
 })
-
 
 GamesTab:CreateButton({
 Name = "Blade Ball #2",
 Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/funhaji/Blade-Ball/refs/heads/main/No-Lag.lua", true))()
+local url = "https://raw.githubusercontent.com/Fspl0it/Blade-Ball/refs/heads/main/Game.lua"
+
+local success, response = pcall(function()
+    return game:HttpGet(url)
+end)
+
+if success and response and not response:find("404: Not Found") then
+    local func, err = loadstring(response)
+    if func then
+        pcall(func)
+    else
+        warn("Failed to execute script:", err)
+    end
+else
+    warn("Not Loaded")
+end
 end
 })
 
@@ -88,13 +157,6 @@ TrollTab:CreateButton({
 Name = "Sirius",
 Callback = function()
 loadstring(game:HttpGet('https://sirius.menu/script'))();
-end
-})
-
-TrollTab:CreateButton({
-Name = "Sirius",
-Callback = function()
-loadstring(game:HttpGet('https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/RizzerGUI'))();
 end
 })
 
@@ -193,6 +255,13 @@ TrollTab:CreateButton({
 Name = "Animations",
 Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ocfi/aqua-hub-is-a-skid-lol/refs/heads/main/animatrix"))()
+end
+})
+
+TrollTab:CreateButton({
+Name = "Rizzer",
+Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/RizzerGUI"))()
 end
 })
 
