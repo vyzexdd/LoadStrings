@@ -115,10 +115,8 @@ else
 warn("Failed to execute script:", err)
 end
 else
-    warn("Not Loaded")
+warn("Not Loaded")
 end
-end
-})
 
 GamesTab:CreateButton({
 Name = "Blox Fruits",
