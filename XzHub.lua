@@ -1,42 +1,46 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local players = game:GetService("Players")
-local plr = players.LocalPlayer
+local player = players.LocalPlayer
 
-local function onCharacterAdded(character)
-local hrp = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local function onCharacterSpawn(character)
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local humanoid = character:WaitForChild("Humanoid")
 end
-plr.CharacterAdded:Connect(onCharacterAdded)	
-if plr.Character then onCharacterAdded(plr.Character) end
 
-local Window = Rayfield:CreateWindow({
-Name = "\226\150\186 XzHub \226\150\192",
-LoadingTitle = "Loading...",
-LoadingSubtitle = "Made by XZIE",
-ConfigurationSaving = {
-Enabled = true,
-FolderName = "XzHub",
-FileName = "byXZIE"
-}
+player.CharacterAdded:Connect(onCharacterSpawn)
+if player.Character then
+    onCharacterSpawn(player.Character)
+end
+
+local window = Rayfield:CreateWindow({
+    Name = "XzHub",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "By XZIE",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "XzHub",
+        FileName = "byXZIE"
+    }
 })
 
-local HubsTab = Window:CreateTab("Hubs")
-local TrollTab = Window:CreateTab("Troll")
-local GamesTab = Window:CreateTab("Games"
+local hubsTab = window:CreateTab("Hubs")
+local trollTab = window:CreateTab("Troll")
+local gamesTab = window:CreateTab("Games")
 
 Rayfield:Notify({
-Title = "XzHub",
-Content = "GUI Loaded Successfully!",
-Duration = 3,
-Image = 4483362458
+    Title = "XzHub",
+    Content = "GUI Loaded Successfully!",
+    Duration = 3,
+    Image = 4483362458
 })
 
-GamesTab:CreateButton({
-Name = "Blade Ball",
-Callback = function()
-loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/79ab2d3174641622d317f9e234797acb.lua"))()
-end
+gamesTab:CreateButton({
+    Name = "Blade Ball",
+    Callback = function()
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/79ab2d3174641622d317f9e234797acb.lua"))()
+    end
 })
+
 
 GamesTab:CreateButton({
 Name = "Blade Ball #2",
