@@ -1,39 +1,65 @@
 local rizzLines = {
-	"roses are red, violets are fine, ull be the six, ill be the nine",
-	"i was feeling very off today, but then u turned me on",
-	"i have 206 bones in my body, want to give me another one",
-	"im not a weatherman, but u can expect a few more inches tonight",
-	"are u an archaeologist, because ive got a large bone for u to examine",
-	"if u look that good in clothes, u must look even better out of them",
-	"im an adventurer, and i want to explore u",
-	"does ur name start with c, because i can c u getting down for daddy",
-	"is ur name winter, because ull be coming soon",
-	"if i was the judge, id sentence u to my bed",
-	"im not feeling myself today, can i feel u instead",
-	"someone should call the police, because u just stole my heart",
-	"im not a dentist, but i bet i could give u a filling",
-	"i wish u were here to play simon says with me, in bed",
-	"i dont like children until they are our children, what do u think about that",
-	"if ur feeling down, i can feel u up",
-	"are u siri, because u autocomplete me",
-	"are u a camera, because every time i look at u, i smile",
-	"thank god i have life insurance, because u make my heart stop",
-	"ur so beautiful, that u made me forget my pickup line",
-	"ur lips look lonely, wanna introduce them to mine",
-	"life without u is like a broken pencil, pointless",
-	"i know were not socks, but we make a great pair",
-	"if i could rearrange the alphabet, id put u and i together",
-	"are u from tennessee, because ur the only 10 i see",
-	"im no photographer, but i can picture us together",
-	"are u a magician, when i look at u, everything disappears",
-	"hey, tie ur shoes, i dont want u falling for anyone else",
-	"roses are red, violets are blue, i didnt know what perfect was until i met u",
-	"id rate u a nine, because the only thing missing is me",
-	"do u have a name, or can i call u mine",
-	"do u have an inhaler, u took my breath away",
-	"what has 36 teeth and holds back the incredible hulk, my zipper",
-	"are u a firework, cause i can light u up",
-	"im not a chef, but i can fill u up",
+"roses are red, violets are fine, ull be the six, ill be the nine",
+"i was feeling very off today, but then u turned me on",
+"i have 206 bones in my body, want to give me another one",
+"im not a weatherman, but u can expect a few more inches tonight",
+"are u an archaeologist, because ive got a large bone for u to examine",
+"if u look that good in clothes, u must look even better out of them",
+"im an adventurer, and i want to explore u",
+"does ur name start with c, because i can c u getting down for daddy",
+"is ur name winter, because ull be coming soon",
+"if i was the judge, id sentence u to my bed",
+"im not feeling myself today, can i feel u instead",
+"someone should call the police, because u just stole my heart",
+"im not a dentist, but i bet i could give u a filling",
+"i wish u were here to play simon says with me, in bed",
+"i dont like children until they are our children, what do u think about that",
+"if ur feeling down, i can feel u up",
+"are u siri, because u autocomplete me",
+"are u a camera, because every time i look at u, i smile",
+"thank god i have life insurance, because u make my heart stop",
+"ur so beautiful, that u made me forget my pickup line",
+"ur lips look lonely, wanna introduce them to mine",
+"life without u is like a broken pencil, pointless",
+"i know were not socks, but we make a great pair",
+"if i could rearrange the alphabet, id put u and i together",
+"are u from tennessee, because ur the only 10 i see",
+"im no photographer, but i can picture us together",
+"are u a magician, when i look at u, everything disappears",
+"hey, tie ur shoes, i dont want u falling for anyone else",
+"roses are red, violets are blue, i didnt know what perfect was until i met u",
+"id rate u a nine, because the only thing missing is me",
+"do u have a name, or can i call u mine",
+"do u have an inhaler, u took my breath away",
+"what has 36 teeth and holds back the incredible hulk, my zipper",
+"are u a firework, cause i can light u up",
+"im not a chef, but i can fill u up",
+}
+
+local trickQuestions = {
+"theres 2 dads, and 2 sons and each take 1 fruit then how many fruits did they take in total",
+"A plane crashes on the border of the US and Canada where do they bury the survivors?",
+"if a rooster lays an egg on the roof of a barn then which side does it roll down?",
+"before mount everest was discovered, what was the tallest mountain on earth?",
+"ur running a race and u pass the person in second place, what place are u in now?",
+"what comes once in a year, twice in a week, but never in a day"
+}
+
+local answers = {
+"Tomorrow",
+"All of them",
+"Second place",
+"None, it’s a hole",
+"12",
+}
+
+local explanations = {
+"theres 1 grandpa, 1 dad, and 1 son, they reached picked one fruit so thats three",
+"a plane crashes on the border of the US and Canada, where do they bury the survivors? u dont bury survivors because theyre still alive.",
+"no lol roosters dont lay eggs lol",
+"mount everest was still the tallest mountain on earth it just wasnt discovered",
+"no lol then ur in second place cuz u passed the person in second so u took their spot, ur still behind the person in first place",
+"nope the letter e lol yEar, wEEk"
 }
 
 local player = game.Players.LocalPlayer
@@ -56,51 +82,161 @@ title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 24
 
-local scrolling = Instance.new("ScrollingFrame", main)
-scrolling.Size = UDim2.new(1, -20, 1, -90)
-scrolling.Position = UDim2.new(0, 10, 0, 50)
-scrolling.ScrollBarThickness = 8
-scrolling.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+local tabButtonFrame = Instance.new("Frame", main)
+tabButtonFrame.Size = UDim2.new(1, 0, 0, 40)
+tabButtonFrame.Position = UDim2.new(0, 0, 0, 40)
+tabButtonFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 
-local UIList = Instance.new("UIListLayout", scrolling)
-UIList.Padding = UDim.new(0, 4)
+local rizzTabButton = Instance.new("TextButton", tabButtonFrame)
+rizzTabButton.Size = UDim2.new(0.33, 0, 1, 0)
+rizzTabButton.Text = "Rizz Lines"
+rizzTabButton.TextColor3 = Color3.new(1, 1, 1)
+rizzTabButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+rizzTabButton.Font = Enum.Font.Gotham
+rizzTabButton.TextSize = 18
+
+local trickTabButton = Instance.new("TextButton", tabButtonFrame)
+trickTabButton.Size = UDim2.new(0.33, 0, 1, 0)
+trickTabButton.Position = UDim2.new(0.33, 0, 0, 0)
+trickTabButton.Text = "Trick Questions"
+trickTabButton.TextColor3 = Color3.new(1, 1, 1)
+trickTabButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+trickTabButton.Font = Enum.Font.Gotham
+trickTabButton.TextSize = 18
+
+local explanationTabButton = Instance.new("TextButton", tabButtonFrame)
+explanationTabButton.Size = UDim2.new(0.33, 0, 1, 0)
+explanationTabButton.Position = UDim2.new(0.66, 0, 0, 0)
+explanationTabButton.Text = "Explanations"
+explanationTabButton.TextColor3 = Color3.new(1, 1, 1)
+explanationTabButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+explanationTabButton.Font = Enum.Font.Gotham
+explanationTabButton.TextSize = 18
+
+local currentTab = "rizz"
+
+local rizzScrolling = Instance.new("ScrollingFrame", main)
+rizzScrolling.Size = UDim2.new(1, -20, 1, -130)
+rizzScrolling.Position = UDim2.new(0, 10, 0, 90)
+rizzScrolling.ScrollBarThickness = 8
+rizzScrolling.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+
+local trickScrolling = Instance.new("ScrollingFrame", main)
+trickScrolling.Size = UDim2.new(1, -20, 1, -130)
+trickScrolling.Position = UDim2.new(0, 10, 0, 90)
+trickScrolling.ScrollBarThickness = 8
+trickScrolling.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+trickScrolling.Visible = false
+
+local explanationScrolling = Instance.new("ScrollingFrame", main)
+explanationScrolling.Size = UDim2.new(1, -20, 1, -130)
+explanationScrolling.Position = UDim2.new(0, 10, 0, 90)
+explanationScrolling.ScrollBarThickness = 8
+explanationScrolling.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+explanationScrolling.Visible = false
+
+local UIListRizz = Instance.new("UIListLayout", rizzScrolling)
+UIListRizz.Padding = UDim.new(0, 4)
+
+local UIListTrick = Instance.new("UIListLayout", trickScrolling)
+UIListTrick.Padding = UDim.new(0, 4)
+
+local UIListExplanation = Instance.new("UIListLayout", explanationScrolling)
+UIListExplanation.Padding = UDim.new(0, 4)
 
 local selectedLine
 
 for _, line in ipairs(rizzLines) do
-	local btn = Instance.new("TextButton", scrolling)
-	btn.Size = UDim2.new(1, -10, 0, 30)
-	btn.Text = line
-	btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-	btn.TextColor3 = Color3.new(1, 1, 1)
-	btn.Font = Enum.Font.Gotham
-	btn.TextSize = 14
-	btn.TextWrapped = true
-	
-	btn.MouseButton1Click:Connect(function()
-		selectedLine = line
-		for _, child in ipairs(scrolling:GetChildren()) do
-			if child:IsA("TextButton") then
-				child.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-			end
-		end
-		btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-	end)
+local btn = Instance.new("TextButton", rizzScrolling)
+btn.Size = UDim2.new(1, -10, 0, 30)
+btn.Text = line
+btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.Font = Enum.Font.Gotham
+btn.TextSize = 14
+btn.TextWrapped = true
+btn.MouseButton1Click:Connect(function()
+selectedLine = line
+for _, child in ipairs(rizzScrolling:GetChildren()) do
+if child:IsA("TextButton") then
+                child.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+end
+end
+btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+end)
 end
 
-scrolling.CanvasSize = UDim2.new(0, 0, 0, #rizzLines * 36)
+for i, question in ipairs(trickQuestions) do
+local btn = Instance.new("TextButton", trickScrolling)
+btn.Size = UDim2.new(1, -10, 0, 30)
+btn.Text = question
+btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.Font = Enum.Font.Gotham
+btn.TextSize = 14
+btn.TextWrapped = true
+btn.MouseButton1Click:Connect(function()
+selectedLine = question
+for _, child in ipairs(trickScrolling:GetChildren()) do
+if child:IsA("TextButton") then
+child.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+end
+end
+btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+end)
+end
+
+for i, explanation in ipairs(explanations) do
+local btn = Instance.new("TextButton", explanationScrolling)
+btn.Size = UDim2.new(1, -10, 0, 30)
+btn.Text = explanation
+btn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+btn.TextColor3 = Color3.new(1, 1, 1)
+btn.Font = Enum.Font.Gotham
+btn.TextSize = 14
+btn.TextWrapped = true
+btn.MouseButton1Click:Connect(function()
+selectedLine = explanation
+for _, child in ipairs(explanationScrolling:GetChildren()) do
+if child:IsA("TextButton") then
+child.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+end
+end
+btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+end)
+end
+
+rizzTabButton.MouseButton1Click:Connect(function()
+currentTab = "rizz"
+rizzScrolling.Visible = true
+trickScrolling.Visible = false
+explanationScrolling.Visible = false
+end)
+
+trickTabButton.MouseButton1Click:Connect(function()
+currentTab = "trick"
+rizzScrolling.Visible = false
+trickScrolling.Visible = true
+explanationScrolling.Visible = false
+end)
+
+explanationTabButton.MouseButton1Click:Connect(function()
+currentTab = "explanation"
+rizzScrolling.Visible = false
+trickScrolling.Visible = false
+explanationScrolling.Visible = true
+end)
 
 local copyButton = Instance.new("TextButton", main)
-copyButton.Size = UDim2.new(1, -20, 0, 40)
-copyButton.Position = UDim2.new(0, 10, 1, -50)
+copyButton.Size = UDim2.new(0, 100, 0, 30)
+copyButton.Position = UDim2.new(0.5, -50, 1, -40)
 copyButton.Text = "Copy"
-copyButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+copyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 copyButton.TextColor3 = Color3.new(1, 1, 1)
-copyButton.Font = Enum.Font.GothamBold
-copyButton.TextSize = 18
-
+copyButton.Font = Enum.Font.Gotham
+copyButton.TextSize = 14
 copyButton.MouseButton1Click:Connect(function()
-	if selectedLine then
-		setclipboard(selectedLine)
-	end
+if selectedLine then
+setclipboard(selectedLine)
+end
 end)
