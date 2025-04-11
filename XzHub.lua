@@ -22,65 +22,7 @@ FileName = "byXZIE"
 
 local HubsTab = Window:CreateTab("Hubs")
 local TrollTab = Window:CreateTab("Troll")
-local GamesTab = Window:CreateTab("Games")
-local HitboxTab = Window:CreateTab("Hitbox")
-local SetupTab = Window:CreateTab("Setup")
-
-_G.HitboxSize = 50
-_G.HitboxTransparency = 0.7
-_G.HitboxEnabled = false
-
-local function modifyHitbox()
-while _G.HitboxEnabled do
-for _, player in pairs(players:GetPlayers()) do
-if player ~= plr and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-local hrp = player.Character.HumanoidRootPart
-hrp.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-hrp.Transparency = _G.HitboxTransparency
-hrp.BrickColor = BrickColor.new("Really blue")
-hrp.Material = Enum.Material.Neon
-hrp.CanCollide = false
-end
-end
-task.wait(0.1)
-end
-end
-
-HitboxTab:CreateToggle({
-Name = "Enable Hitbox Modifier",
-CurrentValue = _G.HitboxEnabled,
-Flag = "HitboxToggle",
-Callback = function(Value)
-_G.HitboxEnabled = Value
-if Value then
-modifyHitbox()
-end
-end
-})
-
-HitboxTab:CreateSlider({
-Name = "Hitbox Size (only works in an super small amount of games)",
-Range = {10, 100},
-Increment = 5,
-Suffix = "Size",
-CurrentValue = _G.HitboxSize,
-Flag = "HitboxSize",
-Callback = function(Value)
-_G.HitboxSize = Value
-end
-})
-
-HitboxTab:CreateSlider({
-Name = "Hitbox Transparency",
-Range = {0, 1},
-Increment = 0.1,
-Suffix = "",
-CurrentValue = _G.HitboxTransparency,
-Flag = "HitboxTransparency",
-Callback = function(Value)
-_G.HitboxTransparency = Value
-end
-})
+local GamesTab = Window:CreateTab("Games"
 
 Rayfield:Notify({
 Title = "XzHub",
