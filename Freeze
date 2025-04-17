@@ -1,0 +1,132 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local player = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "FreezeToggleUI"
+gui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 150, 0, 60)
+frame.Position = UDim2.new(0, 20, 0.5, -40)
+frame.BackgroundColor3 = Color3.fromRGB(10, 15, 30)
+frame.BackgroundTransparency = 0.3
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Selectable = true
+
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 20)
+
+local glow = Instance.new("ImageLabel", frame)
+glow.Size = UDim2.new(1, 10, 1, 10)
+glow.Position = UDim2.new(0, -5, 0, -5)
+glow.BackgroundTransparency = 1
+glow.Image = "rbxassetid://5028857084"
+glow.ImageColor3 = Color3.fromRGB(0, 120, 255)
+glow.ImageTransparency = 0.5
+glow.ScaleType = Enum.ScaleType.Slice
+glow.SliceCenter = Rect.new(24, 24, 276, 276)
+
+local button = Instance.new("TextButton", frame)
+button.Size = UDim2.new(1, 0, 1, 0)
+button.BackgroundTransparency = 1
+button.Text = "OFF"
+button.Font = Enum.Font.GothamBold
+button.TextSize = 20
+button.TextColor3 = Color3.fromRGB(0, 200, 255)
+
+local dragging = false
+local dragInput
+local dragStart
+local startPos
+
+local function smoothMove(newPosition)
+TweenService:Create(frame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+Position = newPosition
+}):Play()
+end
+
+local function update(input)
+local delta = input.Position - dragStart
+smoothMove(UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y))
+end
+
+local function onMouseEnter()
+if not dragging then
+TweenService:Create(frame, TweenInfo.new(0.15), {
+BackgroundTransparency = 0.25
+}):Play()
+end
+end
+
+local function onMouseLeave()
+if not dragging then
+TweenService:Create(frame, TweenInfo.new(0.15), {
+BackgroundTransparency = 0.3
+}):Play()
+end
+end
+
+frame.MouseEnter:Connect(onMouseEnter)
+frame.MouseLeave:Connect(onMouseLeave)
+button.MouseEnter:Connect(onMouseEnter)
+button.MouseLeave:Connect(onMouseLeave)
+
+local function onInputBegan(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+dragging = true
+dragStart = input.Position
+startPos = frame.Position
+
+TweenService:Create(frame, TweenInfo.new(0.1), {
+BackgroundTransparency = 0.2
+}):Play()
+TweenService:Create(glow, TweenInfo.new(0.1), {
+ImageTransparency = 0.3
+}):Play()
+        
+local connection
+connection = input.Changed:Connect(function()
+if input.UserInputState == Enum.UserInputState.End then
+dragging = false
+connection:Disconnect()
+                
+TweenService:Create(frame, TweenInfo.new(0.2), {
+BackgroundTransparency = 0.3
+}):Play()
+TweenService:Create(glow, TweenInfo.new(0.2), {
+ImageTransparency = 0.5
+}):Play()
+end
+end)
+end
+end
+
+frame.InputBegan:Connect(onInputBegan)
+button.InputBegan:Connect(onInputBegan)
+
+UserInputService.InputChanged:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+update(input)
+end
+end)
+
+local frozen = false
+button.MouseButton1Click:Connect(function()
+if not dragging then
+frozen = not frozen
+button.Text = frozen and "ON" or "OFF"
+
+local char = player.Character
+if char and char:FindFirstChild("HumanoidRootPart") then
+local root = char.HumanoidRootPart
+root.Anchored = frozen
+end
+
+TweenService:Create(glow, TweenInfo.new(0.25), {
+ImageTransparency = frozen and 0.2 or 0.5
+}):Play()
+end
+end)
