@@ -1,0 +1,501 @@
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "wannacry? - xziexd"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Name = "MainFrame"
+frame.Size = UDim2.new(0, 500, 0, 400)
+frame.Position = UDim2.new(0.5, -250, 0.5, -200)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+frame.BackgroundColor3 = Color3.fromRGB(10, 15, 30)
+frame.BackgroundTransparency = 0.1
+frame.BorderSizePixel = 0
+frame.ClipsDescendants = true
+frame.Parent = gui
+
+local glow = Instance.new("ImageLabel")
+glow.Name = "NeonGlow"
+glow.Size = UDim2.new(1, 20, 1, 20)
+glow.Position = UDim2.new(0, -10, 0, -10)
+glow.BackgroundTransparency = 1
+glow.Image = "rbxassetid://5028857084"
+glow.ImageColor3 = Color3.fromRGB(0, 100, 255)
+glow.ScaleType = Enum.ScaleType.Slice
+glow.SliceCenter = Rect.new(24, 24, 276, 276)
+glow.SliceScale = 0.5
+glow.Parent = frame
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = frame
+
+local titleBar = Instance.new("Frame")
+titleBar.Name = "TitleBar"
+titleBar.Size = UDim2.new(1, 0, 0, 35)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3 = Color3.fromRGB(15, 20, 40)
+titleBar.BackgroundTransparency = 0.1
+titleBar.BorderSizePixel = 0
+titleBar.Parent = frame
+
+local titleCorner = Instance.new("UICorner")
+titleCorner.CornerRadius = UDim.new(0, 12)
+titleCorner.Name = "TopCorners"
+titleCorner.Parent = titleBar
+
+local title = Instance.new("TextLabel")
+title.Name = "Title"
+title.Text = "wannacry? - xzieaced"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 16
+title.TextColor3 = Color3.fromRGB(0, 200, 255)
+title.BackgroundTransparency = 1
+title.Size = UDim2.new(0, 200, 1, 0)
+title.Position = UDim2.new(0, 15, 0, 0)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = titleBar
+
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 18
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0.5, -15)
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+closeButton.AutoButtonColor = false
+closeButton.Parent = titleBar
+
+local closeCorner = Instance.new("UICorner")
+closeCorner.CornerRadius = UDim.new(0, 8)
+closeCorner.Parent = closeButton
+
+local isHidden = false
+
+local function toggleUI()
+isHidden = not isHidden
+    
+if isHidden then
+local closeTween = TweenService:Create(
+frame,
+TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+{Size = UDim2.new(0, 500, 0, 0), BackgroundTransparency = 1}
+)
+        
+local glowTween = TweenService:Create(
+glow,
+TweenInfo.new(0.3),
+{ImageTransparency = 1}
+)
+        
+closeTween:Play()
+glowTween:Play()
+else
+frame.Visible = true
+local openTween = TweenService:Create(
+frame,
+TweenInfo.new(0.5, Enum.EasingStyle.Back),
+{BackgroundTransparency = 0.1, Size = UDim2.new(0, 500, 0, 400)}
+)
+        
+local glowTween = TweenService:Create(
+glow,
+TweenInfo.new(0.5),
+{ImageTransparency = 0.2}
+)
+        
+openTween:Play()
+glowTween:Play()
+end
+end
+
+closeButton.MouseButton1Click:Connect(toggleUI)
+
+UserInputService.InputBegan:Connect(function(input, processed)
+if not processed and input.KeyCode == Enum.KeyCode.X then
+toggleUI()
+end
+end)
+
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+local delta = input.Position - dragStart
+local newPos = UDim2.new(
+startPos.X.Scale, 
+startPos.X.Offset + delta.X,
+startPos.Y.Scale, 
+startPos.Y.Offset + delta.Y
+)
+    
+TweenService:Create(
+Frame,
+TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+{Position = newPos}
+):Play()
+end
+
+titleBar.InputBegan:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseButton1 then
+dragging = true
+dragStart = input.Position
+startPos = frame.Position
+        
+input.Changed:Connect(function()
+if input.UserInputState == Enum.UserInputState.End then
+dragging = false
+end
+end)
+end
+end)
+
+titleBar.InputChanged:Connect(function(input)
+if input.UserInputType == Enum.UserInputType.MouseMovement then
+dragInput = input
+end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+if input == dragInput and dragging then
+update(input)
+end
+end)
+
+local tabsContainer = Instance.new("Frame")
+tabsContainer.Name = "Tabs"
+tabsContainer.Size = UDim2.new(1, -20, 0, 40)
+tabsContainer.Position = UDim2.new(0, 10, 0, 40)
+tabsContainer.BackgroundTransparency = 1
+tabsContainer.Parent = frame
+
+local tabsLayout = Instance.new("UIListLayout")
+tabsLayout.FillDirection = Enum.FillDirection.Horizontal
+tabsLayout.Padding = UDim.new(0, 10)
+tabsLayout.Parent = tabsContainer
+
+local contentFrame = Instance.new("Frame")
+contentFrame.Name = "Content"
+contentFrame.Size = UDim2.new(1, -20, 1, -110)
+contentFrame.Position = UDim2.new(0, 10, 0, 90)
+contentFrame.BackgroundTransparency = 1
+contentFrame.Parent = frame
+
+local tabs = {
+{Name = "TROLL", Color = Color3.fromRGB(0, 120, 255)},
+{Name = "GAMES", Color = Color3.fromRGB(0, 120, 255)},
+{Name = "FE/Animations", Color = Color3.fromRGB(0, 120, 255)},
+{Name = "Random", Color = Color3.fromRGB(0, 120, 255)}
+}
+
+local currentTab = nil
+local tabContents = {}
+
+local function createButton(parent, text, url, color)
+local button = Instance.new("TextButton")
+button.Name = text.."Button"
+button.Text = text
+button.Font = Enum.Font.Gotham
+button.TextSize = 14
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.Size = UDim2.new(1, -20, 0, 40)
+button.BackgroundColor3 = color
+button.AutoButtonColor = false
+button.Parent = parent
+    
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = button
+    
+
+local btnGlow = Instance.new("ImageLabel")
+btnGlow.Name = "BtnGlow"
+btnGlow.Size = UDim2.new(1, 10, 1, 10)
+btnGlow.Position = UDim2.new(0, -5, 0, -5)
+btnGlow.BackgroundTransparency = 1
+btnGlow.Image = "rbxassetid://5028857084"
+btnGlow.ImageColor3 = color
+btnGlow.ImageTransparency = 0.8
+btnGlow.ScaleType = Enum.ScaleType.Slice
+btnGlow.SliceCenter = Rect.new(24, 24, 276, 276)
+btnGlow.ZIndex = -1
+btnGlow.Parent = button
+
+button.MouseEnter:Connect(function()
+local hoverColor = Color3.fromRGB(
+math.min(color.R * 255 + 40, 255),
+math.min(color.G * 255 + 40, 255),
+math.min(color.B * 255 + 40, 255)
+)
+        
+game:GetService("TweenService"):Create(
+button,
+TweenInfo.new(0.2),
+{
+BackgroundColor3 = hoverColor,
+Size = UDim2.new(1, -10, 0, 40)
+}
+):Play()
+        
+game:GetService("TweenService"):Create(
+btnGlow,
+TweenInfo.new(0.2),
+{ImageTransparency = 0.6}
+):Play()
+end)
+    
+button.MouseLeave:Connect(function()
+game:GetService("TweenService"):Create(
+button,
+TweenInfo.new(0.2),
+{BackgroundColor3 = color, Size = UDim2.new(1, -20, 0, 40)}
+):Play()
+        
+game:GetService("TweenService"):Create(
+btnGlow,
+TweenInfo.new(0.2),
+ImageTransparency = 0.8}
+):Play()
+end)
+    
+button.MouseButton1Down:Connect(function()
+game:GetService("TweenService"):Create(
+button,
+TweenInfo.new(0.1),
+{Size = UDim2.new(1, -30, 0, 35)}
+):Play()
+end)
+    
+button.MouseButton1Up:Connect(function()
+game:GetService("TweenService"):Create(
+button,
+TweenInfo.new(0.2),
+{Size = UDim2.new(1, -10, 0, 40)}
+):Play()
+        
+game:GetService("TweenService"):Create(
+btnGlow,
+TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+{ImageTransparency = 0.4}
+:Play()
+        
+game:GetService("TweenService"):Create(
+btnGlow,
+TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out, 0, false, 0.2),
+{ImageTransparency = 0.8}
+):Play()
+        
+local success, err = pcall(function()
+loadstring(game:HttpGet(url, true))()
+end)
+if not success then
+warn("Failed to execute "..text..": "..err)
+end
+end)
+end
+
+for i, tab in ipairs(tabs) do
+local tabButton = Instance.new("TextButton")
+tabButton.Name = tab.Name.."Tab"
+tabButton.Text = tab.Name
+tabButton.Font = Enum.Font.GothamBold
+tabButton.TextSize = 14
+tabButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+tabButton.Size = UDim2.new(0.3, -10, 1, 0)
+tabButton.BackgroundColor3 = Color3.fromRGB(30, 40, 70)
+tabButton.AutoButtonColor = false
+tabButton.Parent = tabsContainer
+
+local tabCorner = Instance.new("UICorner")
+tabCorner.CornerRadius = UDim.new(0, 8)
+tabCorner.Parent = tabButton
+
+local tabContent = Instance.new("ScrollingFrame")
+tabContent.Name = tab.Name
+tabContent.Size = UDim2.new(1, 0, 1, 0)
+tabContent.BackgroundTransparency = 1
+tabContent.ScrollBarThickness = 4
+tabContent.ScrollBarImageColor3 = tab.Color
+tabContent.Visible = false
+tabContent.Parent = contentFrame
+
+local contentLayout = Instance.new("UIListLayout")
+contentLayout.Padding = UDim.new(0, 15)
+contentLayout.Parent = tabContent
+
+tabContents[tab.Name] = tabContent
+
+tabButton.MouseEnter:Connect(function()
+if currentTab ~= tab.Name then
+game:GetService("TweenService"):Create(
+tabButton,
+TweenInfo.new(0.2),
+{BackgroundColor3 = Color3.fromRGB(40, 50, 90), TextColor3 = Color3.fromRGB(220, 220, 220)}
+):Play()
+end
+end)
+
+tabButton.MouseLeave:Connect(function()
+if currentTab ~= tab.Name then
+game:GetService("TweenService"):Create(
+tabButton,
+TweenInfo.new(0.2),
+{BackgroundColor3 = Color3.fromRGB(30, 40, 70), TextColor3 = Color3.fromRGB(200, 200, 200)}
+):Play()
+end
+end)
+    
+tabButton.MouseButton1Click:Connect(function()
+if currentTab then
+tabContents[currentTab].Visible = false
+local prevButton = tabsContainer:FindFirstChild(currentTab.."Tab")
+if prevButton then
+game:GetService("TweenService"):Create(
+prevButton,
+TweenInfo.new(0.2),
+{BackgroundColor3 = Color3.fromRGB(30, 40, 70), TextColor3 = Color3.fromRGB(200, 200, 200)}
+):Play()
+end
+end
+        
+currentTab = tab.Name
+tabContent.Visible = true
+        
+game:GetService("TweenService"):Create(
+tabButton,
+TweenInfo.new(0.2),
+{BackgroundColor3 = tab.Color, TextColor3 = Color3.fromRGB(255, 255, 255)}
+):Play()
+        
+if tab.Name == "TROLL" then
+for _, child in ipairs(tabContent:GetChildren()) do
+if child:IsA("TextButton") then
+child:Destroy()
+end
+end
+            
+createButton(tabContent, "Rizzer", "https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/RizzerGUI", tab.Color)
+createButton(tabContent, "Sirius", "https://sirius.menu/script", tab.Color)
+createButton(tabContent, "Hug", "https://raw.githubusercontent.com/ExploitFin/Animations/refs/heads/main/Front%20and%20Back%20Hug%20Tool", tab.Color)
+createButton(tabContent, "Universal Aimbot", "https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/Universal%20Aimbot.lua", tab.Color)
+createButton(tabContent, "Combat Warriors", "https://raw.githubusercontent.com/WeLoveVast/welcomeback/refs/heads/main/hehe", tab.Color)
+createButton(tabContent, "System Broken", "https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/script", tab.Color)
+createButton(tabContent, "Advanced ESP", "https://raw.githubusercontent.com/Mick-gordon/Hyper-Escape/main/DeleteMobCheatEngine.lua", tab.Color)
+createButton(tabContent, "Webhooks", "https://raw.githubusercontent.com/venoxhh/universalscripts/main/webhook_tools", tab.Color)
+createButton(tabContent, "Fake system message", "https://pastebin.com/raw/4XJQCjPg", tab.Color)
+createButton(tabContent, "Infinite yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source", tab.Color)
+
+elseif tab.Name == "FE/Animations" then
+for _, child in ipairs(tabContent:GetChildren()) do
+if child:IsA("TextButton") then
+child:Destroy()
+end
+end
+
+createButton(tabContent, "Animatrix", "https://raw.githubusercontent.com/ocfi/aqua-hub-is-a-skid-lol/refs/heads/main/animatrix", tab.Color)
+createButton(tabContent, "Animations", "https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/Animations%20%232.lua", tab.Color)
+createButton(tabContent, "Stare", "https://raw.githubusercontent.com/hassanxzayn-lua/NEOXHUBMAIN/refs/heads/main/stare", tab.Color)
+createbutton(tabContent, "Invisible", "https://raw.githubusercontent.com/Gon900p/script/refs/heads/main/invisible", tab.Color)
+createbutton(tabContent, "Fake Lag", "https://raw.githubusercontent.com/Biem6ondo/FAKELAG/refs/heads/main/Fakelag", tab.Color)
+
+elseif tab.Name == "Random" then
+for _, child in ipairs(tabContent:GetChildren()) do
+if child:IsA("TextButton") then
+child:Destroy()
+end
+end
+
+createbutton(tabContent, "Executor check panel", "https://raw.githubusercontent.com/RealBatu20/AI-Scripts-2025/refs/heads/main/ExecutorTestsPanel.lua", tab.Color)
+createbutton(tabContent, "QuizBot", "https://raw.githubusercontent.com/Damian-11/quizbot/refs/heads/master/quizbot.luau", tab.Color)
+createbutton(tabContent, "Pshade", "hhttps://raw.githubusercontent.com/randomstring0/pshade-ultimate/refs/heads/main/src/cd.lua", tab.Color)
+createbutton(tabContent, "Wallhop", "https://pastebin.com/raw/0GTnF2hN", tab.Color)
+createbutton(tabContent, "Freeze (good to make ppl mess up combos)", "https://raw.githubusercontent.com/xzieace/LoadStrings/refs/heads/main/Freeze", tab.Color)
+
+elseif tab.Name == "GAMES" then
+for _, child in ipairs(tabContent:GetChildren()) do
+if child:IsA("TextButton") then
+child:Destroy()
+end
+end
+            
+createButton(tabContent, "Blox Fruits", "https://raw.githubusercontent.com/LuaCrack/RubuRoblox/refs/heads/main/RubuBF", tab.Color)
+createButton(tabContent, "Blade Ball", "https://raw.githubusercontent.com/1f0yt/community/main/RedCircleBlock", tab.Color)
+createButton(tabContent, "TSBG", "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/TSBG-VexonHub", tab.Color)
+createButton(tabContent, "MM2", "https://raw.githubusercontent.com/Au0yX/Community/main/XhubMM2", tab.Color)
+createButton(tabContent, "Infinite Trashcan", "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", tab.Color)
+end
+end)
+end
+
+for _, tabContent in pairs(tabContents) do
+tabContent.ScrollingEnabled = true
+tabContent.ElasticBehavior = Enum.ElasticBehavior.WhenScrollable
+tabContent.ScrollBarImageTransparency = 0.5
+tabContent.ScrollBarImageColor3 = Color3.fromRGB(0, 120, 255)
+    
+local scrollConnection
+tabContent:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+if scrollConnection then scrollConnection:Disconnect() end
+scrollConnection = game:GetService("RunService").RenderStepped:Connect(function()
+local current = tabContent.CanvasPosition
+local target = tabContent.CanvasPosition
+local delta = (target - current) * 0.2
+tabContent.CanvasPosition = current + delta
+if (target - current).Magnitude < 0.5 then
+scrollConnection:Disconnect()
+end
+end)
+end)
+end
+
+if #tabs > 0 then
+currentTab = "GAMES"
+local gamesTab = tabsContainer:FindFirstChild("GAMESTab")
+local gamesContent = tabContents["GAMES"]
+    
+if gamesTab and gamesContent then
+gamesContent.Visible = true
+game:GetService("TweenService"):Create(
+gamesTab,
+TweenInfo.new(0.2),
+{BackgroundColor3 = tabs[2].Color, TextColor3 = Color3.fromRGB(255, 255, 255)}
+):Play()
+        
+for _, child in ipairs(gamesContent:GetChildren()) do
+if child:IsA("TextButton") then
+child:Destroy()
+end
+end
+createButton(gamesContent, "Blox Fruits", "https://raw.githubusercontent.com/LuaCrack/RubuRoblox/refs/heads/main/RubuBF", tabs[2].Color)
+createButton(gamesContent, "Blade Ball", "https://raw.githubusercontent.com/Fspl0it/Blade-Ball/refs/heads/main/Game.lua", tabs[2].Color)
+createButton(gamesContent, "TSBG", "https://raw.githubusercontent.com/DiosDi/VexonHub/refs/heads/main/TSBG-VexonHub", tabs[2].Color)
+createButton(gamesContent, "MM2", "https://raw.githubusercontent.com/Au0yX/Community/main/XhubMM2", tabs[2].Color)
+createButton(gamesContent, "Infinite Trashcan", "https://raw.githubusercontent.com/yes1nt/yes/refs/heads/main/Trashcan%20Man", tabs[2].Color)
+end
+end
+
+frame.BackgroundTransparency = 1
+frame.Size = UDim2.new(0, 500, 0, 0)
+glow.ImageTransparency = 1
+
+local openTween = TweenService:Create(
+frame,
+TweenInfo.new(0.5, Enum.EasingStyle.Back),
+{BackgroundTransparency = 0.1, Size = UDim2.new(0, 500, 0, 400)}
+)
+openTween:Play()
+
+TweenService:Create(
+glow,
+TweenInfo.new(0.5, Enum.EasingStyle.Quad),
+{ImageTransparency = 0.2}
+):Play()
